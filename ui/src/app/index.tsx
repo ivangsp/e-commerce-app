@@ -10,14 +10,17 @@ import * as React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
-import { GlobalStyle } from 'styles/global-styles';
+import { useTranslation } from 'react-i18next';
+import { ThemeProvider } from '@emotion/react';
 
+import { GlobalStyle } from 'styles/global-styles';
 import { HomePage } from './pages/HomePage/Loadable';
 import { NotFoundPage } from './components/NotFoundPage/Loadable';
-import { useTranslation } from 'react-i18next';
+import theme from '../theme';
 
 export function App() {
   const { i18n } = useTranslation();
+
   return (
     <BrowserRouter>
       <Helmet
@@ -27,11 +30,13 @@ export function App() {
       >
         <meta name="description" content="A React Boilerplate application" />
       </Helmet>
+      <ThemeProvider theme={theme}>
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route component={NotFoundPage} />
+        </Switch>
+      </ThemeProvider>
 
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route component={NotFoundPage} />
-      </Switch>
       <GlobalStyle />
     </BrowserRouter>
   );
