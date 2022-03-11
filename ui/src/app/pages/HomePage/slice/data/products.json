@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "name": "Shoes",
+    "price": 90.0,
+    "description": "Curabitur aliquet quam id dui posuere blandit.",
+    "image": "http://via.placeholder.com/300"
+  },
+  {
+    "id": 2,
+    "name": "Shoes",
+    "price": 90.0,
+    "description": "Curabitur aliquet quam id dui posuere blandit.",
+    "image": "http://via.placeholder.com/300"
+  },
+  {
+    "id": 3,
+    "name": "Shoes",
+    "price": 90.0,
+    "description": "Curabitur aliquet quam id dui posuere blandit.",
+    "image": "http://via.placeholder.com/300"
+  },
+  {
+    "id": 4,
+    "name": "Shoes",
+    "price": 90.0,
+    "description": "Curabitur aliquet quam id dui posuere blandit.",
+    "image": "http://via.placeholder.com/300"
+  },
+  {
+    "id": 5,
+    "name": "Shoes",
+    "price": 90.0,
+    "description": "Curabitur aliquet quam id dui posuere blandit.",
+    "image": "http://via.placeholder.com/300"
+  },
+  {
+    "id": 6,
+    "name": "Shoes",
+    "price": 90.0,
+    "description": "Curabitur aliquet quam id dui posuere blandit.",
+    "image": "http://via.placeholder.com/300"
+  }
+]
