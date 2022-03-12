@@ -17,6 +17,7 @@ import { GlobalStyle } from 'styles/global-styles';
 import { HomePage } from './pages/HomePage/Loadable';
 import { NotFoundPage } from './components/NotFoundPage/Loadable';
 import theme from '../theme';
+import NavBar from './components/NavBar';
 
 export function App() {
   const { i18n } = useTranslation();
@@ -31,12 +32,14 @@ export function App() {
         <meta name="description" content="A React Boilerplate application" />
       </Helmet>
       <ThemeProvider theme={theme}>
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route component={NotFoundPage} />
-        </Switch>
+        <div>
+          <NavBar />
+          <Switch>
+            <Route exact path="/" component={HomePage} />
+            <Route component={NotFoundPage} />
+          </Switch>
+        </div>
       </ThemeProvider>
-
       <GlobalStyle />
     </BrowserRouter>
   );
