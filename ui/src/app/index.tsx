@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import { useTranslation } from 'react-i18next';
 import { ThemeProvider } from '@emotion/react';
@@ -24,7 +24,7 @@ export function App() {
   const { i18n } = useTranslation();
 
   return (
-    <BrowserRouter>
+    <>
       <Helmet
         titleTemplate="%s - React Boilerplate"
         defaultTitle="React Boilerplate"
@@ -35,16 +35,14 @@ export function App() {
       <ThemeProvider theme={theme}>
         <div>
           <NavBar />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/shoppingCart" element={<ShoppingCart />} />
-              <Route element={<NotFoundPage />} />
-            </Routes>
-          </BrowserRouter>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/shoppingCart" element={<ShoppingCart />} />
+            <Route element={<NotFoundPage />} />
+          </Routes>
         </div>
       </ThemeProvider>
       <GlobalStyle />
-    </BrowserRouter>
+    </>
   );
 }
