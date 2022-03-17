@@ -9,10 +9,20 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import Menu from '../Menu';
 import { Badge } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { numberOfItemsInCartSelector } from 'app/pages/ShoppingCart/slice/selectors';
+import { useShoppingCartSlice } from 'app/pages/ShoppingCart/slice';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 type Props = {};
 
 export default function NavBar(props: Props) {
+  useShoppingCartSlice();
+  const navigate = useNavigate();
+
+  const numberOfitemsInShoppingCart = useSelector(numberOfItemsInCartSelector);
+
   const [accountMenuAnchorEl, setAccountMenuAnchorEl] =
     React.useState<null | HTMLElement>(null);
 
@@ -31,7 +41,7 @@ export default function NavBar(props: Props) {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              E-commerce app
+              <Link to="/">E-commerce app</Link>
             </Typography>
             <div>
               <IconButton
@@ -51,10 +61,10 @@ export default function NavBar(props: Props) {
                 aria-label="Add to cart"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
-                onClick={() => {}}
+                onClick={() => navigate('/shoppingCart')}
                 color="inherit"
               >
-                <Badge badgeContent={4} color="error">
+                <Badge badgeContent={numberOfitemsInShoppingCart} color="error">
                   <ShoppingCartOutlinedIcon />
                 </Badge>
               </IconButton>

@@ -10,10 +10,11 @@ import { Product } from 'types';
 
 type Props = {
   product: Product;
+  handleOnClick: (product: Product) => void;
 };
 
-export default function ProductCard(props: Props) {
-  const { name, description, image, price } = props.product;
+export default function ProductCard({ product, handleOnClick }: Props) {
+  const { name, description, image } = product;
 
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -33,7 +34,7 @@ export default function ProductCard(props: Props) {
       </CardContent>
       <CardActions>
         <Button variant="contained">Buy Now</Button>
-        <Button>Add to Cart</Button>
+        <Button onClick={() => handleOnClick(product)}>Add to Cart</Button>
       </CardActions>
     </Card>
   );
