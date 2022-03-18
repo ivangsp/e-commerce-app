@@ -12,7 +12,9 @@ export interface Product {
   description?: string | null;
 }
 
-export interface ShoppingItem extends Product {
+export interface ShoppingItem {
+  gridId: number;
+  product: Product;
   quantity: number;
 }
 

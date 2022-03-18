@@ -16,16 +16,20 @@ export default function ShoppingCartItem(props: Props) {
   const { actions } = useShoppingCartSlice();
   const dispatch = useDispatch();
 
-  const updateCartQty = (quantity: number) => {
+  const updateCartQty = (gridId: number, quantity: number) => {
     dispatch(
       actions.updateCartQty({
-        productId: id,
+        gridId,
         quantity: quantity,
       }),
     );
   };
 
-  const { name, description, price, image, quantity, id } = props.shoppingItem;
+  const {
+    gridId,
+    quantity,
+    product: { name, description, price, image },
+  } = props.shoppingItem;
 
   return (
     <Box
@@ -67,14 +71,14 @@ export default function ShoppingCartItem(props: Props) {
             sx={{ m: 1, width: '3rem' }}
             value={quantity}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              updateCartQty(Number(e.target.value))
+              updateCartQty(gridId, Number(e.target.value))
             }
           />
-          <IconButton onClick={() => updateCartQty(quantity + 1)}>
+          <IconButton onClick={() => updateCartQty(gridId, quantity + 1)}>
             <AddCircleOutlineIcon />
           </IconButton>
           <IconButton
-            onClick={() => updateCartQty(quantity - 1)}
+            onClick={() => updateCartQty(gridId, quantity - 1)}
             disabled={quantity <= 1}
           >
             <RemoveCircleOutlineIcon />
@@ -96,7 +100,10 @@ export default function ShoppingCartItem(props: Props) {
           textAlign: 'center',
         }}
       >
-        <IconButton color="error">
+        <IconButton
+          color="error"
+          onClick={() => dispatch(actions.deleteProductFromCart(gridId))}
+        >
           <DeleteIcon />
         </IconButton>
       </Box>

@@ -19,10 +19,13 @@ export default function ShoppingCart(props: Props) {
       <Grid container>
         <Grid item md={8}>
           <Box sx={{}}>
-            {shopingCartItems.map((shoppingItem, index) => (
+            {shopingCartItems.map(shoppingItem => (
               <>
                 <Divider />
-                <ShoppingCartItem key={index} shoppingItem={shoppingItem} />
+                <ShoppingCartItem
+                  key={shoppingItem.gridId}
+                  shoppingItem={shoppingItem}
+                />
               </>
             ))}
           </Box>

@@ -1,4 +1,4 @@
 export type UpdateCartQtyAction = {
-  productId: number;
+  gridId: number;
   quantity: number;
 };

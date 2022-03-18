@@ -16,25 +16,34 @@ const slice = createSlice({
     addToCart(state, action: PayloadAction<Product>) {
       const product = action.payload;
       const index = state.shoppingItems.findIndex(
-        ({ id }) => id === product.id,
+        ({ product: { id } }) => id === product.id,
       );
 
       if (index !== -1) {
         const item = state.shoppingItems[index];
         const quantity = item.quantity + 1;
-        state.shoppingItems.splice(index, 1, { ...product, quantity });
+        state.shoppingItems.splice(index, 1, { ...item, quantity });
       } else {
-        state.shoppingItems.push({ ...action.payload, quantity: 1 });
+        const gridId = Date.now();
+        state.shoppingItems.push({ gridId, product, quantity: 1 });
       }
     },
+
     updateCartQty(state, action: PayloadAction<UpdateCartQtyAction>) {
-      const { quantity, productId } = action.payload;
-      const index = state.shoppingItems.findIndex(({ id }) => id === productId);
+      const { quantity, gridId } = action.payload;
+      const index = state.shoppingItems.findIndex(
+        item => gridId === item.gridId,
+      );
 
       if (index !== -1) {
         const item = state.shoppingItems[index];
         state.shoppingItems.splice(index, 1, { ...item, quantity });
       }
+    },
+
+    deleteProductFromCart(state, { payload }: PayloadAction<number>) {
+      const items = state.shoppingItems.filter(item => item.gridId !== payload);
+      state.shoppingItems = items;
     },
   },
 });
