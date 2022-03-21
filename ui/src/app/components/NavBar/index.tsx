@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -14,12 +14,15 @@ import { numberOfItemsInCartSelector } from 'app/pages/ShoppingCart/slice/select
 import { useShoppingCartSlice } from 'app/pages/ShoppingCart/slice';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { UserContext } from 'app/contexts/user.context';
 
 type Props = {};
 
 export default function NavBar(props: Props) {
   useShoppingCartSlice();
   const navigate = useNavigate();
+
+  const { currentUser } = useContext(UserContext);  
 
   const numberOfitemsInShoppingCart = useSelector(numberOfItemsInCartSelector);
 
