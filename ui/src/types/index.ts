@@ -1,7 +1,7 @@
 export interface RootState {
-  // [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
   homePage?: HomePageState;
   shoppingCart?: ShoppingCartState;
+  errorDialog: ErrorDialog;
 }
 
 export interface Product {
@@ -27,3 +27,8 @@ export interface HomePageState {
 export interface ShoppingCartState {
   shoppingItems: ShoppingItem[];
 }
+
+export type ErrorDialog = {
+  open: boolean;
+  errorMessage: string | null;
+};

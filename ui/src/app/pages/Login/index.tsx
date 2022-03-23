@@ -1,7 +1,9 @@
-import { Alert, Box, Button, Container } from '@mui/material';
+import { Box, Button, Container } from '@mui/material';
+import { openErrorDialog } from 'app/components/ErrorDialog/slice';
 import TextField from 'app/components/TextField';
 import { UserContext } from 'app/contexts/user.context';
 import React, { ChangeEvent, useContext, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
   signInUserWithEmailAndPassword,
@@ -12,13 +14,12 @@ import {
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const dispatch = useDispatch();
 
   const { setCurrentUser } = useContext(UserContext);
 
   const handleLogin = async (provider?: AuthProviders) => {
     let result;
-    setError('');
 
     switch (provider) {
       case 'googlePopup':
@@ -33,7 +34,7 @@ export default function Login() {
 
     const { error, user } = result;
     if (error) {
-      setError(error);
+      dispatch(openErrorDialog(error));
       return;
     }
 
@@ -54,12 +55,6 @@ export default function Login() {
           width: '450px',
         }}
       >
-        {error && (
-          <Alert sx={{ marginBottom: 5 }} severity="error">
-            {error}
-          </Alert>
-        )}
-
         <form>
           <TextField
             id="email"

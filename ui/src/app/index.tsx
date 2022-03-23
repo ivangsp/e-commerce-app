@@ -7,6 +7,7 @@
  */
 
 import { ThemeProvider } from '@emotion/react';
+import ErrorDialog from 'app/components/ErrorDialog';
 import * as React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
@@ -46,6 +47,7 @@ export function App() {
             </Routes>
           </div>
         </UserContextProvider>
+        <ErrorDialog />
       </ThemeProvider>
       <GlobalStyle />
     </>
