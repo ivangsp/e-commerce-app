@@ -1,0 +1,36 @@
+version: "3.7"
+services:
+  db:
+    image: postgres:12
+    container_name: db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ecom
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
+
+  api:
+    env_file:
+      - .env
+    build:
+      context: api
+      dockerfile: ../api.dockerfile
+    image: ecom/api
+    container_name: api
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+  ui:
+    env_file:
+      - .env
+    build:
+      context: ui
+      dockerfile: ../ui.dockerfile
+    image: ecom/ui
+    container_name: ui
+    ports:
+      - 3000:3000
