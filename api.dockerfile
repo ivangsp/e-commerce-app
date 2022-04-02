@@ -20,7 +20,7 @@ COPY  . .
 RUN npm run build
 
 # Bind to all network interfaces so that it can be mapped to the host OS
-ENV HOST=0.0.0.0 PORT=3000
+ENV HOST=0.0.0.0 PORT=8080
 
 EXPOSE ${PORT}
 
@@ -29,4 +29,4 @@ ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait
 RUN chmod +x /wait
 
 ## Launch the wait tool and then your application
-CMD /wait && npm run start:dev
+CMD /wait && npm run dev
