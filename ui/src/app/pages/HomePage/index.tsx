@@ -8,7 +8,7 @@ import { useHomePageSlice } from './slice';
 import { productsSelector } from './slice/selectors';
 import { HomePageProps } from './types';
 
-export function HomePage(props: HomePageProps) {
+const HomePage = (props: HomePageProps) => {
   const { actions } = useHomePageSlice();
   const {
     actions: { addToCart },
@@ -29,7 +29,12 @@ export function HomePage(props: HomePageProps) {
         <meta name="description" content="List of products" />
       </Helmet>
       <Container>
-        <Grid container justifyContent="center" spacing={3}>
+        <Grid
+          container
+          justifyContent="center"
+          spacing={3}
+          sx={{ marginTop: 0 }}
+        >
           {products.map((product, index) => (
             <Grid item key={index}>
               <ProductCard
@@ -43,4 +48,5 @@ export function HomePage(props: HomePageProps) {
       </Container>
     </>
   );
-}
+};
+export default HomePage;
