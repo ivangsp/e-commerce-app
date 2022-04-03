@@ -8,7 +8,7 @@ import { useHomePageSlice } from './slice';
 import { productsSelector } from './slice/selectors';
 import { HomePageProps } from './types';
 
-const HomePage = (props: HomePageProps) => {
+export const HomePage = (props: HomePageProps) => {
   const { actions } = useHomePageSlice();
   const {
     actions: { addToCart },
@@ -49,4 +49,3 @@ const HomePage = (props: HomePageProps) => {
     </>
   );
 };
-export default HomePage;

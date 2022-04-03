@@ -9,7 +9,7 @@ import theme from '../theme';
 import NavBar from './components/NavBar';
 import { NotFoundPage } from './components/NotFoundPage/Loadable';
 import RequireAuth from './components/RequireAuth';
-import HomePage from './pages/HomePage';
+import { HomePage } from './pages/HomePage/Loadable';
 import Login from './pages/Login';
 import ShoppingCart from './pages/ShoppingCart';
 import SignUp from './pages/SignUp';
@@ -30,17 +30,16 @@ export function App() {
         <AuthProvider>
           <NavBar />
           <Routes>
+            {/* Public routes */}
             <Route path="/" element={<HomePage />} />
-            <Route
-              path="/shoppingCart"
-              element={
-                <RequireAuth>
-                  <ShoppingCart />
-                </RequireAuth>
-              }
-            />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
+
+            {/* Private routes */}
+            <Route element={<RequireAuth />}>
+              <Route path="/shoppingCart" element={<ShoppingCart />} />
+            </Route>
+
             <Route element={<NotFoundPage />} />
           </Routes>
         </AuthProvider>
