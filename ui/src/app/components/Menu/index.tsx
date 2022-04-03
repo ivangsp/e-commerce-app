@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import MuiMenu from '@mui/material/Menu';
 import {
   MenuProps as MuiMenuProps,
@@ -8,7 +8,7 @@ import {
 import { MarkRequired } from 'ts-essentials';
 
 interface MenuItemProps extends MuiMenuItemProps {
-  label: string;
+  label: string | ReactNode;
 }
 
 interface Props
@@ -24,8 +24,8 @@ export default function Menu(props: Props) {
   const { open, id, anchorEl, onClose, menuItems, ...others } = props;
 
   const menuItemsNodes = menuItems.map(
-    ({ label, onClick, ...otherMenuItemProps }) => (
-      <MuiMenuItem key={label} onClick={onClick} {...otherMenuItemProps}>
+    ({ label, onClick, ...otherMenuItemProps }, index) => (
+      <MuiMenuItem key={index} onClick={onClick} {...otherMenuItemProps}>
         {label}
       </MuiMenuItem>
     ),

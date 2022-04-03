@@ -1,5 +1,8 @@
 ui/.env
-api/.vscode
-ui/.vscode
-db-data
+api/dist/*
+api/node_modules/*
+db-data/*
+api/.vscode/
+*.tsbuildinfo
+
 .env
