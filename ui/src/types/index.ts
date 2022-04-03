@@ -32,3 +32,8 @@ export type ErrorDialog = {
   open: boolean;
   errorMessage: string | null;
 };
+export interface LocationState {
+  from: {
+    path: string;
+  };
+};

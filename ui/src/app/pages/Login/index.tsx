@@ -1,45 +1,27 @@
 import { Box, Button, Container } from '@mui/material';
-import { openErrorDialog } from 'app/components/ErrorDialog/slice';
 import TextField from 'app/components/TextField';
-import { UserContext } from 'app/contexts/user.context';
-import React, { ChangeEvent, useContext, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
-import {
-  signInUserWithEmailAndPassword,
-  signInWithGooglePopup,
-  AuthProviders,
-} from 'utils/firebase';
+import useAuth from 'hooks/useAuth';
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { LocationState } from 'types';
+import { AuthProviders } from 'utils/firebase';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const dispatch = useDispatch();
 
-  const { setCurrentUser } = useContext(UserContext);
+  const location = useLocation();
+  const { isLoggedIn, login } = useAuth();
 
-  const handleLogin = async (provider?: AuthProviders) => {
-    let result;
-
-    switch (provider) {
-      case 'googlePopup':
-        result = await signInWithGooglePopup();
-        break;
-
-      case 'emailAndPassword':
-        result = await signInUserWithEmailAndPassword(email, password);
-        break;
-      default:
-    }
-
-    const { error, user } = result;
-    if (error) {
-      dispatch(openErrorDialog(error));
-      return;
-    }
-
-    setCurrentUser(user);
+  const handleLogin = async (provider: AuthProviders) => {
+    await login(provider, { email, password });
   };
+
+  if (isLoggedIn) {
+    const locationState = location.state as unknown as LocationState;
+    console.log('Ueffect > ', locationState);
+    return <Navigate to={locationState?.from.path || '/'} replace />;
+  }
 
   return (
     <Container

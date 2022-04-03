@@ -9,13 +9,13 @@ export interface User {
   displayName?: string | null;
 }
 
-export interface UserCreateDto extends BaseUser {
-  userName: string | null;
+export interface UserSignupDto extends BaseUser {
   password: string;
   confirmPassword: string;
+  displayName?: string | null;
 }
 
-export interface CreateUserUsingAuthProviderDto extends BaseUser {
-  userName: string | null;
+export interface CreateUserDto extends BaseUser {
+  userName?: string | null;
   uid: string;
 }

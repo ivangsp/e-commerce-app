@@ -1,4 +1,4 @@
-import { UserCreateDto } from './../types/user';
+import { UserSignupDto } from './../types/user';
 export function uniqueId() {
   return Date.now().toString();
 }
@@ -16,7 +16,7 @@ export function checkEmailValidity(email: string) {
 }
 
 export function validateUserCredentials(
-  user: Pick<UserCreateDto, 'email' | 'password'>,
+  user: Pick<UserSignupDto, 'email' | 'password'>,
 ) {
   const { email, password } = user;
 
@@ -32,5 +32,3 @@ export function validateUserCredentials(
     };
   }
 }
-
-

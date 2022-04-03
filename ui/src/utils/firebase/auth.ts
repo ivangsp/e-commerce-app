@@ -1,11 +1,14 @@
-import { User, UserCreateDto } from './../../types/user';
-import { CreateUserUsingAuthProviderDto } from './../../types/user';
+import { User, UserSignupDto } from './../../types/user';
+import { CreateUserDto } from './../../types/user';
 import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  onAuthStateChanged,
+  NextOrObserver,
+  signOut,
 } from 'firebase/auth';
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 import { FirebaseError } from 'firebase/app';
@@ -18,74 +21,90 @@ providers.setCustomParameters({
 export type AuthProviders = 'googlePopup' | 'emailAndPassword';
 
 export const auth = getAuth();
-export const signInWithGooglePopup = async () => {
-  const { user } = await signInWithPopup(auth, providers);
-  return user;
+
+export const signInWithGooglePopup = () => {
+  return signInWithPopup(auth, providers);
 };
 
 export const db = getFirestore();
 
-export const createUserFromAuth = async (
-  user: CreateUserUsingAuthProviderDto,
-) => {
-  const userDocRef = doc(db, 'users', user.uid);
-
+export const createUser = async (userData: CreateUserDto) => {
+  const userDocRef = doc(db, 'users', userData.uid);
   const userSnapshot = await getDoc(userDocRef);
 
   if (!userSnapshot.exists()) {
-    const { userName, email } = user;
-    const createdAt = new Date();
-
-    try {
-      await setDoc(userDocRef, {
-        userName,
-        email,
-        createdAt,
-      });
-    } catch (error: any) {
-      console.log('error creating the user', error?.message);
-    }
+    return setDoc(userDocRef, { ...userData, createdAt: new Date() });
   }
-
-  return userDocRef;
 };
 
 export const createUserUsingEmailAndPassword = async (
-  userData: UserCreateDto,
+  userData: UserSignupDto,
 ) => {
-  const { email, password, userName } = userData;
+  const { email, password, displayName } = userData;
+
+  let user: User | null = null;
+  let error = '';
 
   try {
-    const { user } = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password,
-    );
-
-    await createUserFromAuth({ email, userName, uid: user.uid });
-    return { user };
+    const results = await createUserWithEmailAndPassword(auth, email, password);
+    user = { ...results.user, displayName };
   } catch (err: any) {
-    return { error: getFireBaseErrorMessage(err) };
+    error = getFireBaseErrorMessage(err);
   }
+
+  return { user, error };
 };
 
 export async function signInUserWithEmailAndPassword(
-  email: string,
-  password: string,
+  userCredentials: Pick<UserSignupDto, 'email' | 'password'>,
+) {
+  const { email, password } = userCredentials;
+  return signInWithEmailAndPassword(auth, email, password);
+}
+
+export async function loginUsingFireBase(
+  provider: AuthProviders,
+  userCredentials?: Pick<UserSignupDto, 'email' | 'password'>,
 ) {
   let user: User | null = null;
   let error = '';
 
-  await signInWithEmailAndPassword(auth, email, password)
-    .then(response => {
-      user = response.user;
-    })
-    .catch((err: FirebaseError) => {
-      error = getFireBaseErrorMessage(err);
-    });
+  try {
+    switch (provider) {
+      case 'googlePopup': {
+        const result = await signInWithGooglePopup();
+        user = result.user;
+        break;
+      }
+      case 'emailAndPassword': {
+        if (userCredentials?.email && userCredentials.password) {
+          const result = await signInUserWithEmailAndPassword(userCredentials);
+          user = result.user;
+        }
+        break;
+      }
+      default:
+    }
 
+    // create user if the user doesn\'t exists
+    if (user && user.email !== null) {
+      const userName = user.displayName ?? user.email?.split('@')[0];
+      await createUser({ ...user, email: user.email, userName });
+    }
+  } catch (err: any) {
+    error = getFireBaseErrorMessage(err);
+  }
   return { user, error };
 }
+
+export const signOutUser = () => signOut(auth);
+
+export const onAuthStateChangeListener = (
+  callback: NextOrObserver<User | null>,
+  errorCallback: any,
+) => {
+  return onAuthStateChanged(auth, callback, errorCallback);
+};
 
 export const getFireBaseErrorMessage = (error: FirebaseError) => {
   let errorMessage = '';

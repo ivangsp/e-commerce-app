@@ -1,22 +1,25 @@
 import { Box, Button, Container } from '@mui/material';
 import TextField from 'app/components/TextField';
-import MuiLink from '@mui/material/Link';
 import React, { ChangeEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { UserCreateDto } from 'types/user';
+import { UserSignupDto } from 'types/user';
 import { createUserUsingEmailAndPassword } from 'utils/firebase';
 import { validateUserCredentials } from 'utils/helper';
 
 type FormFieldsError = Record<string, string> | null;
 
+const defaultFormFieldsValue = {
+  displayName: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+};
+
 export default function SignUp() {
   const [error, setError] = useState<FormFieldsError>(null);
-  const [formFields, setFormFields] = useState<UserCreateDto>({
-    userName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
+  const [formFields, setFormFields] = useState<UserSignupDto>(
+    defaultFormFieldsValue,
+  );
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
@@ -40,12 +43,11 @@ export default function SignUp() {
       return;
     }
 
-    const result = await createUserUsingEmailAndPassword(formFields);
-    console.log('RESULT', result);
-    
+    await createUserUsingEmailAndPassword(formFields);
+    setFormFields(defaultFormFieldsValue);
   };
 
-  const { userName, email, confirmPassword, password } = formFields;
+  const { displayName, email, confirmPassword, password } = formFields;
 
   return (
     <Container
@@ -63,12 +65,12 @@ export default function SignUp() {
       >
         <form onSubmit={createUserAccount}>
           <TextField
-            id="userName"
+            id="displayName"
             required
             label={'User Name'}
-            value={userName}
+            value={displayName}
             onChange={handleOnChange}
-            helperText={error?.userName}
+            helperText={error?.displayName}
           />
           <TextField
             id="email"
