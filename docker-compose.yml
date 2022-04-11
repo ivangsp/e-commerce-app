@@ -22,6 +22,10 @@ services:
     container_name: api
     ports:
       - 8080:8080
+
+    volumes:
+      - ./api/src:/home/node/app/src
+      - ./api/package.json:/home/node/app/package.json
     depends_on:
       - db
   ui:
@@ -32,5 +36,8 @@ services:
       dockerfile: ../ui.dockerfile
     image: ecom/ui
     container_name: ui
+    volumes:
+      - ./ui/src:/app/src
+      - ./ui/package.json:/app/package.json
     ports:
       - 3000:3000
